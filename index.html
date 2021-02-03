@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://i.pinimg.com/564x/75/b7/08/75b708a32f18ab35bdd0093034667763.jpg" type="image/gif" sizes="16x16">
+    <title>Ông chủ kim 2k</title>
+</head>
+
+<body>
+    <h1 id="anhtu">anh tú đẹp trai</h1>
+    <div>
+        <h3>Chọn Sân Chơi</h3>
+        <select name="" id="groundSize" onchange="setYardSize(this)">
+            <option value="">-----------</option>
+        </select>
+    </div>
+    <button id="replay"> Chơi lại</button>
+    <table id="playground" border="1">
+
+    </table>
+
+    <script src="jquery.js"></script>
+    <script>
+        var yardSize = 0;
+        var disable = false;
+        $(document).ready(function() {
+            var options = ``;
+            for (let i = 5; i < 25; i++) {
+                options += `<option value="${i}">${i}X${i}</option>`
+
+            }
+            $('#groundSize').append(options);
+            $('#replay').click(function() {
+                relay();
+            })
+        });
+
+        function setYardSize(e) { //get value sân đấu
+            yardSize = e.value
+            start(yardSize);
+        }
+
+        function start() { //tạo sân đấu với số cột x số dòng 
+            var content = "";
+            for (let i = 0; i < yardSize; i++) {
+                content += `<tr>`;
+                for (let j = 0; j < yardSize; j++) {
+                    content += `<td x="${j}" y ="${i}" onclick= "checked(this)"></td>`
+                }
+                content += `</tr>`;
+            }
+            $('table#playground').empty();
+            $('table#playground').append(content);
+        }
+        var turn = "X";
+
+        function checked(e) { //check ô đã click
+            console.log(e);
+            if (!disable && $(e).text() == "") {
+                $(e).text(turn);
+                turn === "X" ? $(e).addClass('txt-red') : $(e).addClass('txt-green');
+                checkWinnerX(e);
+                checkWinnerY(e);
+                checkWinnerCrossX(e);
+                checkWinnerCrossY(e);
+                turn = turn === "X" ? "0" : "X";
+            }
+
+        }
+
+        function checkWinnerX(e) { //check winner
+            //console.log($(e).attr('x'), $(e).attr('y'));
+            var xDim = $(e).attr('x');
+            var yDim = $(e).attr('y');
+            var listTd = $(`td[x="${xDim}"]`);
+            //console.log(listTd);
+            var winnerCount = 0;
+            for (let i = 0; i <= listTd.length; i++) {
+                let element = listTd[i];
+                if (winnerCount >= 5) {
+                    break;
+                }
+                if ($(element).text() === turn) {
+                    winnerCount++;
+                } else {
+                    winnerCount = 0;
+                }
+            }
+            if (winnerCount >= 5) {
+                alertWinner();
+            }
+        }
+
+        function checkWinnerY(e) { //check winner
+            //console.log($(e).attr('x'), $(e).attr('y'));
+            var xDim = $(e).attr('x');
+            var yDim = $(e).attr('y');
+            var listTd = $(`td[y="${yDim}"]`);
+            //console.log(listTd);
+            var winnerCount = 0;
+            for (let i = 0; i <= listTd.length; i++) {
+                let element = listTd[i];
+                if (winnerCount >= 5) {
+                    break;
+                }
+                if ($(element).text() === turn) {
+                    winnerCount++;
+                } else {
+                    winnerCount = 0;
+                }
+            }
+            if (winnerCount >= 5) {
+                alertWinner()
+            }
+        }
+
+
+        function checkWinnerCrossY(e) {
+            var xDim = $(e).attr('x');
+            var yDim = $(e).attr('y');
+            let winnerCount = 0;
+            var listTd = $(`td[x="${xDim}"]`);
+            console.log(listTd.length);
+            for (let i = 0; i < listTd.length; i++) {
+                for (let j = 0; j < listTd.length; j++) {
+                    if ($(`td[x="${j}"][y="${i}"]`).text() == turn) {
+                        if ($(`td[x="${j+1}"][y="${i+1}"]`).text() == turn) {
+                            if ($(`td[x="${j+2}"][y="${i+2}"]`).text() == turn) {
+                                if ($(`td[x="${j+3}"][y="${i+3}"]`).text() == turn) {
+                                    if ($(`td[x="${j+4}"][y="${i+4}"]`).text() == turn) {
+                                        winnerCount = 5;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (winnerCount >= 5) {
+                    alertWinner();
+                }
+            }
+        }
+
+        function checkWinnerCrossX(e) {
+            var xDim = $(e).attr('x');
+            var yDim = $(e).attr('y');
+            let winnerCount = 0;
+            var listTd = $(`td[x="${xDim}"]`);
+            console.log(listTd.length);
+            for (let i = 0; i < listTd.length; i++) {
+                for (let j = 0; j < listTd.length; j++) {
+                    if ($(`td[x="${j}"][y="${i}"]`).text() == turn) {
+                        console.log($(`td[x="${j}"][y="${i}"]`));
+
+                        if ($(`td[x="${j-1}"][y="${i+1}"]`).text() == turn) {
+                            if ($(`td[x="${j-2}"][y="${i+2}"]`).text() == turn) {
+                                if ($(`td[x="${j-3}"][y="${i+3}"]`).text() == turn) {
+                                    if ($(`td[x="${j-4}"][y="${i+4}"]`).text() == turn) {
+                                        winnerCount = 5;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (winnerCount >= 5) {
+                    alertWinner();
+                }
+            }
+        }
+
+        function alertWinner() {
+            alert('Chúc mừng bạn đã trở thành tỷ phú');
+            disable = true;
+
+        }
+
+        function relay() {
+            let replay = confirm("Bạn có muốn chơi lại hay không");
+            if (replay === true) {
+                start();
+                disable = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
