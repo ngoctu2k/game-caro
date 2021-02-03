@@ -139,9 +139,9 @@
                         }
                     }
                 }
-                if (winnerCount >= 5) {
-                    alertWinner();
-                }
+            }
+            if (winnerCount >= 5) {
+                alertWinner();
             }
         }
 
@@ -155,7 +155,6 @@
                 for (let j = 0; j < listTd.length; j++) {
                     if ($(`td[x="${j}"][y="${i}"]`).text() == turn) {
                         console.log($(`td[x="${j}"][y="${i}"]`));
-
                         if ($(`td[x="${j-1}"][y="${i+1}"]`).text() == turn) {
                             if ($(`td[x="${j-2}"][y="${i+2}"]`).text() == turn) {
                                 if ($(`td[x="${j-3}"][y="${i+3}"]`).text() == turn) {
@@ -168,16 +167,16 @@
                         }
                     }
                 }
-                if (winnerCount >= 5) {
-                    alertWinner();
-                }
+            }
+            if (winnerCount >= 5) {
+                alertWinner();
             }
         }
 
         function alertWinner() {
             alert('Chúc mừng bạn đã trở thành tỷ phú');
             disable = true;
-
+            return;
         }
 
         function relay() {
